@@ -11,6 +11,7 @@
     "@uiw/react-codemirror": "^4.21.21",
     "codemirror": "^6.0.1",
     "firebase": "^10.8.1",
+    "firebase-admin": "^12.0.0",
     "framer-motion": "^11.0.8",
     "react": "^18.2.0",
     "react-codemirror2": "^7.3.0",

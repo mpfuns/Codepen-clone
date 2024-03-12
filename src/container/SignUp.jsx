@@ -4,14 +4,53 @@ import { UserAuthInput } from '../components'
 import { FaEnvelope, FaGithub } from 'react-icons/fa6'
 import { FcGoogle } from 'react-icons/fc'
 import { MdOutlinePassword } from 'react-icons/md'
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { signInWithGitHub, signInWithGoogle } from '../utils/helpers'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../config/firebase.config'
+import { fadeInOut } from '../animations'
 const SignUp = () => {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [getEmailValidationStatus, setGetEmailValidationStatus] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
+  const [alert, setAlert]= useState(false)
+  const [alertMessage, setAlertMessage] = useState("")
+
+  const createNewUser = async() => {
+      if(getEmailValidationStatus){
+        await createUserWithEmailAndPassword(auth, email, password).then(
+          userCred => {
+            if(userCred){
+              console.log(userCred)
+            }
+          })
+          .catch((err) => console.log(err))
+      }
+  }
+
+  const loginWithEmailPassword = async() =>{
+    if(getEmailValidationStatus){
+      await signInWithEmailAndPassword(auth, email, password).then(
+        userCred =>{
+          if(userCred){
+            console.log(userCred)
+          }
+        })
+        .catch((err) => {
+          console.log(err.message)
+          console.log(err.code)
+          if(err.message.includes("invalid-credential")){
+            setAlert(true)
+            setAlertMessage("Invalid Email or Password")
+          }
+          
+        }
+        )
+    }
+  }
+
    return (
     <div className='w-full py-6 '>
 <img src={Logo} alt="logo" className='object-contain  w-32 h-auto opacity-50' />
@@ -41,13 +80,36 @@ const SignUp = () => {
       />
 
      {/*alert section  */}
+  <AnimatePresence>
+    {alert && (
+        <motion.p 
+        key={"AlertMessage"}
+        {...fadeInOut}
+         className='text-red-500'
+         >
+          {alertMessage}
+         </motion.p>
+    )}
+  </AnimatePresence>
 
      {/* login button */}
-    {!isLogin? (  <motion.div  whileTap={{scale:0.9}}  className='flex items-center justify-center w-full bg-emerald-500 px-6 py-3 rounded-xl  hover:bg-emerald-400 cursor-pointer '>
+    {!isLogin? (  
+    <motion.div
+    onClick={createNewUser}
+    whileTap={{scale:0.9}}  
+    className='flex items-center justify-center w-full bg-emerald-500 px-6 py-3 rounded-xl  hover:bg-emerald-400 cursor-pointer '
+    >
         <p className='text-xl text-white'>Sign Up</p>
-      </motion.div>):  (  <motion.div  whileTap={{scale:0.9}}  className='flex items-center justify-center w-full bg-emerald-500 px-6 py-3 rounded-xl  hover:bg-emerald-400 cursor-pointer '>
+      </motion.div>
+      ):  (  
+      <motion.div 
+      onClick={loginWithEmailPassword } 
+      whileTap={{scale:0.9}}  
+      className='flex items-center justify-center w-full bg-emerald-500 px-6 py-3 rounded-xl  hover:bg-emerald-400 cursor-pointer '
+      >
         <p className='text-xl text-white'>Login</p>
-      </motion.div>)}
+      </motion.div>
+      )}
   {/* acount  text section */}
 
 {

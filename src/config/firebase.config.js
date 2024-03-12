@@ -1,4 +1,5 @@
 import { getApps, getApp, initializeApp } from "firebase/app";
+//npm install firebase-admin --save (this didn't work )
 import {getAuth} from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
 
