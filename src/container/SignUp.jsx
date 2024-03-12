@@ -41,13 +41,30 @@ const SignUp = () => {
         .catch((err) => {
           console.log(err.message)
           console.log(err.code)
+
+       
           if(err.message.includes("invalid-credential")){
             setAlert(true)
             setAlertMessage("Invalid Email or Password")
           }
+          // only  invalid-credential  show from firebase. try many ways to fix it.
+          else if (err.message.includes("user-not-found")){
+            setAlert(true)
+            setAlertMessage("Invalid : User Not Found")
+          }
+          else if (err.message.includes("wrong-password")){
+            setAlert(true)
+            setAlertMessage("Password Mismatch")
+          }
+          else{
+            setAlert(true);
+            setAlertMessage("Temporarily disabled due to many failed login🫤")
+          }
+          setInterval(()=> {
+            setAlert(false)
+          },4000)
           
-        }
-        )
+        })
     }
   }
 
