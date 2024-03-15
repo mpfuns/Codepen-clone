@@ -3,6 +3,7 @@ import { Home } from "./container";
 import { useEffect, useState } from "react";
 import { auth, db } from "./config/firebase.config";
 import { doc, setDoc } from "firebase/firestore";
+import { Spinner } from "./components";
 
 function App() {
   
@@ -23,6 +24,10 @@ function App() {
 navigate("/home/auth", {replace: true});
 
       }
+
+
+
+      
      })
 
      //clean up the listener event 
@@ -31,7 +36,9 @@ navigate("/home/auth", {replace: true});
   return ( 
    <>
    {isLoading?(
-   <div className="w-screen h-screen flex items-center justify-center overflow-hidden"></div>
+   <div className="w-screen h-screen flex items-center justify-center overflow-hidden">
+    <Spinner />
+   </div>
    )  
    :(
     <div className="w-screen h-screen flex items-start justify-start  overflow-hidden">
