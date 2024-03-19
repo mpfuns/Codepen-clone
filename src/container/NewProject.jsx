@@ -59,8 +59,12 @@ const saveProgram = async () =>{
     }
 
     await setDoc(doc(db, "Projects", id), _doc).then((res) =>{
-
+      setAlert(true)
     }).catch((err => console.log(err)))
+
+    setInterval(()=>{
+      setAlert(false);
+    },2000);
 }
 
 
@@ -74,7 +78,7 @@ const saveProgram = async () =>{
 
       
       {/*  header section  */}
-     <header className='w-full flex itmes-center justify-between px-12 py-4'>
+     <header className='w-full flex items-center justify-between px-12 py-4'>
       <div className=' flex itmes-center justify-center gap-6'>
       <Link to={"/home/projects"}>
         <img src={Logo}  className='object-contain  w-24 h-auto  ' />
